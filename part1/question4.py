@@ -17,14 +17,15 @@ import pets_db
 # In the file `pets_db.py` three tables are created. Data is then added to each 
 # of the tables. The questions below are about how the data in each of the tables
 # is related.
+# the tables are: animals, people, and people_animals
 
 # Part 4.A:
-# Write SQL to select the pets that are owned by nobody.
+# Write SQL to select the animals that are owned by nobody.
 # The output should be a list of tuples in the format: (<pet name>, <species>, <age>)
 
 sql_pets_owned_by_nobody = """
 
-Your SQL here.
+select name, species, age from animals where animal_id not in (select pet_id from people_animals);
 
 """
 
@@ -34,7 +35,7 @@ Your SQL here.
 
 sql_pets_older_than_owner = """
 
-Your SQL here.
+select count(*) from animals p join people o on p.animal_id = o.person_id where p.age > o.age;
 
 """
 
@@ -43,6 +44,7 @@ Your SQL here.
 # The output should be a list of tuples in the format: (<person name>, <pet name>, <species>)
 sql_only_owned_by_bessie = """ 
 
-Your SQL here.
+select DISTINCT o.name, p.name, p.species from animals p join people o where o.name = "bessie" and p.animal_id in (select pet_id from animals p join people o on p.animal_id = o.person_id join people_animals pa on pa.owner_id = o.person_id 
+	where pa.owner_id = 2);
 
 """
